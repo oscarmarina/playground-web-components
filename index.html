@@ -6,27 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Playground Web Component</title>
     <style>
-
+      my-rating:not(:defined) {
+        visibility: hidden;
+      }
     </style>
   </head>
   <body>
-    <my-rating tabindex="0" focus-visible>
+    <my-rating id="r1"></my-rating>
+    <hr />
+    <my-rating id="r2">
       <p>Styled Rating Web Component</p>
+      <img slot="rating-star" src="./assets/star_icon.png" alt="" />
     </my-rating>
     <hr />
-
+    <stop-watch role="timer"></stop-watch>
     <script type="module">
-      import { pseudoCssSupport } from '@blockquote/pseudo-css-support';
       import './rating.js';
+      import './stop-watch.js';
 
-      console.log(':focus-visible ', pseudoCssSupport(':focus-visible'));
-      console.log('::part(foo) ', pseudoCssSupport('::part(foo)'));
-      console.log(':host-context(foo) ', pseudoCssSupport(':host-context(foo)'));
-      console.log(':has(foo) ', pseudoCssSupport(':has(foo)'));
-      console.log(':playing ', pseudoCssSupport(':playing'));
-
-      const myRatingNode = document.querySelector('my-rating');
-      myRatingNode.addEventListener('ratingchanged', (ev) => console.log('===> ', ev.detail));
+      document.addEventListener('ratingchanged', ({ target, detail }) =>
+        console.dir(target, ' ===> ', detail)
+      );
     </script>
   </body>
 </html>

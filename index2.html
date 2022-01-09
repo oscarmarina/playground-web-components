@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playground Web Component</title>
+    <style>
+      button {
+        cursor: pointer;
+      }
+      button,
+      span {
+        display: inline-block;
+        margin: 0 0.5rem;
+        border: 0.125rem solid goldenrod;
+        padding: 0rem 0.375rem;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // https://dev.to/lexlohr/concepts-behind-modern-frameworks-4m1g
+
+      const context = [];
+
+      const state = (initialValue) => ({
+        _subscribers: new Set(),
+        _value: initialValue,
+        get: function () {
+          const current = context.at(-1);
+          // console.log(context);
+          if (current) {
+            this._subscribers.add(current);
+            // console.log( this._subscribers);
+          }
+          return this._value;
+        },
+        set: function (value) {
+          if (this._value === value) {
+            return;
+          }
+          this._value = value;
+          this._subscribers.forEach((sub) => sub());
+        },
+      });
+
+      const effect = (fn) => {
+        const execute = () => {
+          context.push(execute);
+          try {
+            fn();
+          } finally {
+            context.pop();
+          }
+        };
+        execute();
+      };
+
+      //
+
+      const count = state(0);
+      const increment = () => count.set(count.get() + 1);
+      const button = document.createElement('button');
+      const span = document.createElement('span');
+
+      document.body.appendChild(button);
+      document.body.appendChild(span);
+
+      const btnEffect = () => {
+        button.textContent = count.get();
+      };
+
+      const spanEffect = () => {
+        span.textContent = count.get();
+      };
+
+      effect(btnEffect);
+      effect(spanEffect);
+
+      button.addEventListener('click', increment);
+    </script>
+  </body>
+</html>

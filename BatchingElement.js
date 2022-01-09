@@ -1,40 +1,37 @@
 /* https://open-wc.org/blog/lit-element-deepdive-in-batching-updates */
 
 export class BatchingElement extends HTMLElement {
+  #renderRequest = false;
+  #res = () => {};
+  #uuid = '';
+
   constructor() {
     super();
-    this.updateComplete = this.__resolver();
-    this.__uuid = BatchingElement.uuid++; // eslint-disable-line
+    this.#uuid = Math.random().toString(36).substring(2, 10);
+    this.updateComplete = this.#resolver();
+  }
+
+  get uuid() {
+    return this.#uuid;
   }
 
   render() {}
 
-  async requestUpdate(dispatchEvent) {
-    if (!this.__renderRequest) {
-      this.__renderRequest = true;
-      await 0;
-      this.render();
-      if (dispatchEvent) {
-        if (this.constructor.config.disabled && this.hasAttribute('disabled')) {
-          /** noop */
-        } else {
-          this.__dispatch();
-        }
-      }
+  async requestUpdate() {
+    if (!this.#renderRequest) {
+      this.#renderRequest = true;
+      this.#renderRequest = await false;
 
-      this.__res();
-      this.updateComplete = this.__resolver();
-      this.__renderRequest = false;
+      this.render();
+      this.#res();
+
+      this.updateComplete = this.#resolver();
     }
   }
 
-  __dispatch() {} // eslint-disable-line
-
-  __resolver() {
+  #resolver() {
     return new Promise((res) => {
-      this.__res = res;
+      this.#res = () => res;
     });
   }
 }
-
-BatchingElement.uuid = 0;
