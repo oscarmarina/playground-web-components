@@ -1,0 +1,25 @@
+{
+  "name": "playground-web-components",
+  "version": "0.0.1",
+  "description": "playground Webcomponent",
+  "keywords": [
+    "web-component"
+  ],
+  "license": "MIT",
+  "files": [
+    "/define/",
+    "/src/",
+    "index.js",
+    "!/**/*.scss"
+  ],
+  "scripts": {
+    "start": "vite"
+  },
+  "dependencies": {
+    "@blockquote/pseudo-css-support": "^1.0.0"
+  },
+  "devDependencies": {
+    "vite": "^2.7.0"
+  },
+  "customElements": "custom-elements.json"
+}
