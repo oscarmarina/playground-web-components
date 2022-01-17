@@ -1,3 +1,5 @@
+/* https://www.thinktecture.com/en/web-components/native-web-components-without-framework */
+
 import { BatchingElement } from './BatchingElement.js';
 const template = document.createElement('template');
 template.innerHTML = `
