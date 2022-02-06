@@ -70,10 +70,14 @@ https://browserstrangeness.bitbucket.io/css_hacks.html#safari
 @media not all and (min-resolution:.001dpcm) {
   @supports (-webkit-appearance:none) {
     :host([focus-visible]) button:focus {
-      opacity: 0.5;
-      color: blue;
+
     }
   }
+}
+
+:host([focus-visible]) button:focus:not(:focus-visible){
+  opacity: 0.5;
+  color: blue;
 }
 
 button:focus-visible {

@@ -3,8 +3,10 @@
 export class BatchingElement extends HTMLElement {
   constructor() {
     super();
-    this.updateComplete = this.__resolver();
-    this.__uuid = BatchingElement.uuid++; // eslint-disable-line
+    Object.assign(this, {
+      updateComplete: this.__resolver(),
+      __uuid: BatchingElement.uuid++
+    });
   }
 
   render() {}
@@ -21,7 +23,6 @@ export class BatchingElement extends HTMLElement {
           this.__dispatch();
         }
       }
-
       this.__res();
       this.updateComplete = this.__resolver();
       this.__renderRequest = false;
